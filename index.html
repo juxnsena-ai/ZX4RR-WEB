@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>Ninja ZX-4RR · Experiencia 3D</title>
+  <meta name="description" content="Experiencia interactiva de la Kawasaki Ninja ZX-4RR: despiece 3D de 80 piezas, sonido del motor, pantalla TFT, configurador, comparativa y ficha técnica. Página informativa no oficial.">
+  <meta name="theme-color" content="#060807">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23060807'/%3E%3Cpath d='M14 46 L30 18 L36 18 L24 40 L50 40 L46 46 Z' fill='%236BCB1F'/%3E%3C/svg%3E">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;800;900&family=Rajdhani:wght@500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body data-view="inicio" data-stage="on">
+
+  <!-- Pantalla de carga -->
+  <div id="loader">
+    <div class="ld-logo">KAWASAKI <b>NINJA</b> <span>ZX-4RR</span></div>
+    <div class="ld-bar"><i></i></div>
+    <p id="ldMsg">Ensamblando 80 piezas…</p>
+  </div>
+
+  <!-- Barra superior -->
+  <header class="topbar">
+    <a class="brand" href="#inicio">
+      <span class="brand-mark">KAWASAKI <b>NINJA</b></span>
+      <span class="brand-tag">ZX-4RR</span>
+    </a>
+    <nav class="tabs" id="tabs" aria-label="Secciones">
+      <button class="tab" data-go="inicio" data-short="Inicio" title="Inicio (1)"><i class="fa-solid fa-house"></i><span>Inicio</span></button>
+      <button class="tab" data-go="despiece" data-short="3D" title="Despiece 3D (2)"><i class="fa-solid fa-cubes"></i><span>Despiece 3D</span></button>
+      <button class="tab" data-go="cockpit" data-short="Cockpit" title="Cockpit (3)"><i class="fa-solid fa-gauge-high"></i><span>Cockpit</span></button>
+      <button class="tab" data-go="configurador" data-short="Color" title="Configurador (4)"><i class="fa-solid fa-palette"></i><span>Configurador</span></button>
+      <button class="tab" data-go="comparativa" data-short="Rivales" title="Comparativa (5)"><i class="fa-solid fa-chart-simple"></i><span>Comparativa</span></button>
+      <button class="tab" data-go="cotizacion" data-short="Precio" title="Cotización (6)"><i class="fa-solid fa-file-lines"></i><span>Cotización</span></button>
+      <button class="tab" data-go="ficha" data-short="Ficha" title="Ficha técnica (7)"><i class="fa-solid fa-list-check"></i><span>Ficha técnica</span></button>
+    </nav>
+    <div class="top-actions">
+      <div class="engine-pill" id="enginePill" hidden>
+        <span class="ep-dot"></span><b id="epRpm">0</b><small>rpm</small>
+        <button id="epStop" title="Apagar motor" aria-label="Apagar motor"><i class="fa-solid fa-power-off"></i></button>
+      </div>
+      <button class="icon-btn" id="muteBtn" title="Silenciar (M)" aria-label="Silenciar"><i class="fa-solid fa-volume-high"></i></button>
+      <button class="icon-btn" id="helpBtn" title="Guía rápida (?)" aria-label="Guía rápida"><i class="fa-solid fa-circle-question"></i></button>
+    </div>
+  </header>
+
+  <main id="app">
+    <div id="stage"></div>
+
+    <!-- ================= INICIO ================= -->
+    <section class="view" id="view-inicio">
+      <div class="hero-copy pe">
+        <div class="badge-live"><span class="ping"></span>Pura herencia supersport KRT</div>
+        <h1>AWAKEN THE <span>SCREAMING&nbsp;4</span></h1>
+        <p>Un tetracilíndrico en línea de <b>399&nbsp;cm³</b> que gira por encima de las <b class="g">15.000&nbsp;rpm</b>. Desármala pieza a pieza, escúchala rugir, configúrala y compárala con sus rivales.</p>
+        <div class="stat-row">
+          <div class="stat"><b>80</b><small>CV con Ram Air</small></div>
+          <div class="stat"><b class="g">15.000+</b><small>rpm</small></div>
+          <div class="stat"><b>399</b><small>cm³ · 4 cil.</small></div>
+          <div class="stat"><b>189</b><small>kg en marcha</small></div>
+        </div>
+        <div class="rev-box">
+          <button class="rev-btn" id="revBtn" type="button" aria-label="Mantén pulsado para acelerar">
+            <span class="rev-ring"></span><i class="fa-solid fa-fire-flame-curved"></i><span class="rev-txt">MANTÉN<br>PARA ACELERAR</span>
+          </button>
+          <div class="rev-meter">
+            <div class="rev-top"><span>RPM</span><b id="heroRpm">0</b></div>
+            <div class="rev-bar"><i id="heroRpmBar"></i><em></em></div>
+            <div class="rev-scale"><span>0</span><span>4</span><span>8</span><span>12</span><span class="r">16 ×1000</span></div>
+            <small class="muted">Sonido sintetizado en vivo · también con la <kbd>barra espaciadora</kbd></small>
+          </div>
+        </div>
+        <div class="explore-grid">
+          <button data-go="despiece"><i class="fa-solid fa-cubes"></i><b>Despiece 3D</b><small>80 piezas desarmables</small></button>
+          <button data-go="cockpit"><i class="fa-solid fa-gauge-high"></i><b>Cockpit</b><small>TFT, sonido y KTRC</small></button>
+          <button data-go="configurador"><i class="fa-solid fa-palette"></i><b>Configurador</b><small>Colores y escapes</small></button>
+          <button data-go="comparativa"><i class="fa-solid fa-flag-checkered"></i><b>Comparativa</b><small>Vuelta simulada</small></button>
+          <button data-go="cotizacion"><i class="fa-solid fa-file-lines"></i><b>Cotización</b><small>Solo informativa</small></button>
+          <button data-go="ficha"><i class="fa-solid fa-list-check"></i><b>Ficha técnica</b><small>Todos los datos</small></button>
+        </div>
+      </div>
+      <div class="stage-hint pe"><i class="fa-solid fa-hand-pointer"></i> Arrastra para girar · toca los puntos verdes</div>
+    </section>
+
+    <!-- ================= DESPIECE ================= -->
+    <section class="view" id="view-despiece">
+      <aside class="panel dz-left pe" id="dzLeft">
+        <button class="sheet-toggle" id="dzSheet" aria-label="Mostrar u ocultar panel"><i class="fa-solid fa-sliders"></i></button>
+        <div class="panel-head">
+          <h2>Despiece <span>3D</span></h2>
+          <small><b>80</b> piezas · 7 sistemas</small>
+        </div>
+        <div class="seg" id="dzTabs">
+          <button data-tab="ctl"><i class="fa-solid fa-sliders"></i> Controles</button>
+          <button data-tab="list"><i class="fa-solid fa-list"></i> Piezas (80)</button>
+        </div>
+        <div class="dz-page" data-page="ctl">
+          <div class="dz-block">
+            <label class="lbl" for="explodeRange">Explosión <b id="explodeVal">0%</b></label>
+            <input type="range" id="explodeRange" class="range" min="0" max="100" value="0">
+            <div class="btn-row">
+              <button class="btn btn-primary" id="btnExplode"><i class="fa-solid fa-burst"></i> Explotar</button>
+              <button class="btn" id="btnAssemble"><i class="fa-solid fa-compress"></i> Ensamblar</button>
+            </div>
+          </div>
+          <div class="dz-block tools">
+            <button class="tool" id="tXray" aria-pressed="false"><i class="fa-solid fa-x-ray"></i><span>Rayos X</span></button>
+            <button class="tool" id="tLabels" aria-pressed="false"><i class="fa-solid fa-tags"></i><span>Etiquetas</span></button>
+            <button class="tool" id="tAnim" aria-pressed="false"><i class="fa-solid fa-gears"></i><span>Animar</span></button>
+            <button class="tool" id="tReset"><i class="fa-solid fa-magnet"></i><span>Recolocar</span></button>
+          </div>
+          <div class="dz-block">
+            <label class="lbl">Vista</label>
+            <div class="seg seg-sm" id="camSeg">
+              <button data-cam="tresCuartos">3/4</button><button data-cam="lateral">Lateral</button><button data-cam="frontal">Frente</button><button data-cam="superior">Arriba</button><button data-cam="explotada">Amplia</button>
+            </div>
+          </div>
+          <div class="dz-block">
+            <label class="lbl">Sistemas <small class="muted">toca uno para destacarlo</small></label>
+            <div class="sys-chips" id="sysChips"></div>
+          </div>
+          <button class="btn btn-game" id="btnGame"><i class="fa-solid fa-puzzle-piece"></i> Reto: arma la moto</button>
+        </div>
+        <div class="dz-page" data-page="list">
+          <div class="search"><i class="fa-solid fa-magnifying-glass"></i><input id="partSearch" type="search" placeholder="Buscar pieza…" autocomplete="off"></div>
+          <div class="part-list" id="partList"></div>
+        </div>
+      </aside>
+
+      <aside class="panel dz-right pe" id="dzRight" hidden>
+        <button class="close-x" id="dzClose" aria-label="Cerrar"><i class="fa-solid fa-xmark"></i></button>
+        <div class="pd-top"><span class="pd-sys" id="pdSys"></span><span class="pd-code" id="pdCode"></span></div>
+        <h3 id="pdName"></h3>
+        <p class="pd-desc" id="pdDesc"></p>
+        <div class="pd-specs" id="pdSpecs"></div>
+        <div class="pd-tip"><i class="fa-solid fa-lightbulb"></i><p id="pdTip"></p></div>
+        <div class="btn-row three">
+          <button class="btn btn-sm" id="pdIsolate"><i class="fa-solid fa-expand"></i> Aislar</button>
+          <button class="btn btn-sm" id="pdFocus"><i class="fa-solid fa-crosshairs"></i> Enfocar</button>
+          <button class="btn btn-sm" id="pdReturn"><i class="fa-solid fa-magnet"></i> A su sitio</button>
+        </div>
+        <div class="pd-nav">
+          <button class="btn btn-ghost btn-sm" id="pdPrev"><i class="fa-solid fa-chevron-left"></i> Anterior</button>
+          <span id="pdPos"></span>
+          <button class="btn btn-ghost btn-sm" id="pdNext">Siguiente <i class="fa-solid fa-chevron-right"></i></button>
+        </div>
+      </aside>
+
+      <div class="dz-hint pe" id="dzHint">
+        <span><i class="fa-solid fa-hand"></i> Arrastra una pieza para sacarla</span>
+        <span><i class="fa-solid fa-arrows-rotate"></i> Arrastra el fondo para girar</span>
+        <span><i class="fa-solid fa-magnifying-glass-plus"></i> Rueda o pellizco: zoom</span>
+        <span><i class="fa-solid fa-computer-mouse"></i> Doble clic: aislar</span>
+      </div>
+      <div class="iso-bar pe" id="isoBar" hidden>
+        <span><i class="fa-solid fa-expand"></i> Aislada: <b id="isoName"></b></span>
+        <button class="btn btn-sm" id="isoExit"><i class="fa-solid fa-xmark"></i> Salir <kbd>Esc</kbd></button>
+      </div>
+
+      <div class="game-hud panel pe" id="gameHud" hidden>
+        <div class="gh-title"><i class="fa-solid fa-puzzle-piece"></i> ARMA LA MOTO</div>
+        <div class="gh-stats">
+          <div><small>Piezas</small><b id="ghCount">0/0</b></div>
+          <div><small>Tiempo</small><b id="ghTime">0:00</b></div>
+          <div><small>Récord</small><b id="ghBest">—</b></div>
+        </div>
+        <div class="gh-bar"><i id="ghBar"></i></div>
+        <div class="btn-row">
+          <button class="btn btn-sm" id="ghHint"><i class="fa-solid fa-lightbulb"></i> Pista</button>
+          <button class="btn btn-sm" id="ghQuit"><i class="fa-solid fa-flag"></i> Rendirse</button>
+        </div>
+        <small class="muted">Arrastra cada pieza hacia su sitio: encaja sola al acercarla.</small>
+      </div>
+
+      <div class="modal pe" id="gameModal" hidden>
+        <div class="modal-card panel">
+          <button class="close-x" data-close aria-label="Cerrar"><i class="fa-solid fa-xmark"></i></button>
+          <div id="gameModalBody"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= COCKPIT ================= -->
+    <section class="view solid" id="view-cockpit">
+      <div class="ck-wrap">
+        <div class="ck-main">
+          <div class="tft" id="tft" data-theme="dark">
+            <div class="tft-top">
+              <span id="tClock">12:00</span>
+              <span class="tft-mode" id="tMode">SPORT</span>
+              <span class="tft-bt"><i class="fa-brands fa-bluetooth-b"></i> RIDEOLOGY</span>
+            </div>
+            <svg class="tft-tach" id="tTach" viewBox="0 0 640 150" preserveAspectRatio="none" aria-hidden="true"></svg>
+            <div class="tft-mid">
+              <div class="tft-speed"><b id="tSpeed">0</b><small>km/h</small></div>
+              <div class="tft-rpm"><b id="tRpm">0</b><small>rpm</small></div>
+              <div class="tft-gear"><small>GEAR</small><b id="tGear">N</b></div>
+            </div>
+            <div class="tft-chips">
+              <span class="chip-t" id="tPower">POWER F</span>
+              <span class="chip-t" id="tKtrc">KTRC 1</span>
+              <span class="chip-t" id="tKqs">KQS</span>
+              <span class="chip-t warn" id="tTc">KTRC</span>
+              <span class="chip-t warn" id="tSlip">¡PATINA!</span>
+              <span class="chip-t warn" id="tAbs">ABS</span>
+            </div>
+            <div class="tft-bottom">
+              <span>FUEL <i class="fuelbar"><i id="tFuel"></i></i></span>
+              <span>TEMP <b id="tTemp">32</b>°C</span>
+              <span>ODO <b id="tOdo">1287</b> km</span>
+              <span>TRIP <b id="tTrip">0.0</b> km</span>
+            </div>
+            <div class="tft-msg" id="tMsg"></div>
+            <div class="tft-off" id="tOff"><b>ZX-4RR</b><small>Pulsa ENGINE START</small></div>
+          </div>
+          <div class="ck-tele panel">
+            <div class="ck-tele-head">
+              <b><i class="fa-solid fa-wave-square"></i> Telemetría en vivo</b>
+              <span class="legend"><i style="--c:#6BCB1F"></i>rpm <i style="--c:#ffffff"></i>km/h <i style="--c:#3d8bff"></i>gas <i style="--c:#ffb22e"></i>KTRC</span>
+            </div>
+            <canvas id="teleCanvas"></canvas>
+          </div>
+        </div>
+        <aside class="ck-side panel">
+          <div class="ck-row">
+            <button class="start-btn" id="startBtn" type="button"><span>ENGINE</span><b>START</b></button>
+            <div class="ck-throttle">
+              <div class="thr-track" id="thrTrack" aria-label="Acelerador"><div class="thr-fill" id="thrFill"></div><div class="thr-knob" id="thrKnob"></div></div>
+              <small>Gas<br><kbd>W</kbd> <kbd>↑</kbd></small>
+            </div>
+            <div class="ck-shift">
+              <button class="btn shift" id="shUp"><i class="fa-solid fa-chevron-up"></i><small>Subir <kbd>E</kbd></small></button>
+              <button class="btn shift" id="shN"><b>N</b><small>Neutro <kbd>N</kbd></small></button>
+              <button class="btn shift" id="shDown"><i class="fa-solid fa-chevron-down"></i><small>Bajar <kbd>Q</kbd></small></button>
+              <button class="btn shift brake" id="brakeBtn"><i class="fa-solid fa-circle-stop"></i><small>Freno <kbd>S</kbd></small></button>
+            </div>
+          </div>
+          <div class="ck-block">
+            <label class="lbl">Modo de conducción</label>
+            <div class="mode-grid" id="modeGrid">
+              <button data-mode="sport"><b>SPORT</b><small>F · KTRC 1</small></button>
+              <button data-mode="road"><b>ROAD</b><small>F · KTRC 2</small></button>
+              <button data-mode="rain"><b>RAIN</b><small>L · KTRC 3</small></button>
+              <button data-mode="rider"><b>RIDER</b><small>Personal</small></button>
+            </div>
+            <p class="mode-desc" id="modeDesc"></p>
+          </div>
+          <div class="ck-block" id="riderBox">
+            <label class="lbl">Ajustes del modo Rider</label>
+            <div class="ck-two">
+              <div class="seg" id="segPower"><button data-v="F">Full</button><button data-v="L">Low</button></div>
+              <div class="seg" id="segKtrc"><button data-v="1">1</button><button data-v="2">2</button><button data-v="3">3</button><button data-v="0">OFF</button></div>
+            </div>
+          </div>
+          <div class="ck-block ck-two">
+            <div><label class="lbl">Asfalto</label><div class="seg" id="segSurface"><button data-v="dry">Seco</button><button data-v="wet">Mojado</button></div></div>
+            <div><label class="lbl">Pantalla</label><div class="seg" id="segTheme"><button data-v="dark">Noche</button><button data-v="light">Día</button></div></div>
+          </div>
+          <div class="ck-block">
+            <label class="lbl" for="volRange">Volumen</label>
+            <input type="range" class="range" id="volRange" min="0" max="100" value="70">
+          </div>
+          <p class="ck-note"><i class="fa-solid fa-circle-info"></i> Prueba en <b>Mojado</b> con KTRC en OFF y acelera a fondo en 1.ª. Simulación ilustrativa: desarrollos y física simplificados.</p>
+        </aside>
+      </div>
+    </section>
+
+    <!-- ================= CONFIGURADOR ================= -->
+    <section class="view" id="view-configurador">
+      <div class="cfg-title pe">
+        <small>Configurador en tiempo real</small>
+        <h2 id="cfgName">KRT Edition</h2>
+        <div class="seg seg-sm" id="cfgCam">
+          <button data-cam="config">3/4</button><button data-cam="lateral">Derecha</button><button data-cam="lateralIzq">Izquierda</button><button data-cam="frontal">Frente</button><button data-cam="trasera">Detrás</button>
+        </div>
+      </div>
+      <aside class="panel cfg-panel pe" id="cfgPanel">
+        <div class="seg" id="cfgTabs">
+          <button data-tab="color">Color</button><button data-tab="parts">Chasis y llantas</button><button data-tab="exhaust">Escape</button><button data-tab="acc">Accesorios</button>
+        </div>
+        <div class="cfg-page" data-page="color">
+          <div class="swatches" id="presetGrid"></div>
+          <label class="lbl">Personaliza tus colores</label>
+          <div class="pickers">
+            <label><input type="color" id="pick1"><span>Principal</span></label>
+            <label><input type="color" id="pick2"><span>Secundario</span></label>
+            <label><input type="color" id="pick3"><span>Detalles</span></label>
+          </div>
+        </div>
+        <div class="cfg-page" data-page="parts">
+          <label class="lbl">Color del chasis</label>
+          <div class="dots" id="frameDots"></div>
+          <label class="lbl">Color de llantas</label>
+          <div class="dots" id="wheelDots"></div>
+        </div>
+        <div class="cfg-page" data-page="exhaust"><div class="opt-cards" id="exhaustCards"></div></div>
+        <div class="cfg-page" data-page="acc"><div class="acc-list" id="accList"></div></div>
+        <div class="cfg-foot">
+          <div><small>Total estimado</small><b id="cfgTotal">—</b></div>
+          <button class="btn btn-primary" data-go="cotizacion">Cotización <i class="fa-solid fa-arrow-right"></i></button>
+        </div>
+      </aside>
+    </section>
+
+    <!-- ================= COMPARATIVA ================= -->
+    <section class="view solid" id="view-comparativa">
+      <div class="cmp-wrap">
+        <div class="cmp-head">
+          <div><small>Comparativa y telemetría</small><h2>ZX-4RR <span>vs</span> rivales</h2></div>
+          <div class="rival-chips" id="rivalChips"></div>
+        </div>
+        <div class="cmp-grid">
+          <div class="panel cmp-radar">
+            <svg id="radar" viewBox="0 0 440 400" aria-label="Gráfico radar"></svg>
+            <div class="radar-legend" id="radarLegend"></div>
+          </div>
+          <div class="panel cmp-right">
+            <div class="seg" id="cmpTabs"><button data-tab="lap">Vuelta simulada</button><button data-tab="specs">Cifras</button><button data-tab="accel">Aceleración</button></div>
+            <div class="cmp-page" data-page="lap">
+              <div class="lap-top">
+                <svg id="track" viewBox="0 0 620 340" aria-label="Circuito"></svg>
+                <div class="lap-board" id="lapBoard"></div>
+              </div>
+              <canvas id="lapCanvas"></canvas>
+              <div class="lap-ctrl">
+                <button class="btn btn-primary" id="lapStart"><i class="fa-solid fa-flag-checkered"></i> Iniciar vuelta</button>
+                <div class="seg seg-sm" id="lapSpeed"><button data-v="4">×4</button><button data-v="8">×8</button><button data-v="16">×16</button></div>
+                <small class="muted">Circuito ficticio de 3,0 km · velocidad frente a distancia</small>
+              </div>
+            </div>
+            <div class="cmp-page" data-page="specs"><div id="barsBox" class="bars"></div></div>
+            <div class="cmp-page" data-page="accel"><div id="accelBox" class="bars"></div></div>
+          </div>
+        </div>
+        <p class="cmp-note">Cifras aproximadas declaradas por los fabricantes (pueden variar por año y mercado). La simulación usa física simplificada con fines ilustrativos.</p>
+      </div>
+    </section>
+
+    <!-- ================= COTIZACIÓN ================= -->
+    <section class="view solid" id="view-cotizacion">
+      <div class="qt-wrap">
+        <div class="panel qt-left">
+          <div class="qt-img"><img id="qtImg" alt="Tu Ninja ZX-4RR configurada"></div>
+          <div class="qt-conf" id="qtConf"></div>
+          <button class="btn" data-go="configurador"><i class="fa-solid fa-pen"></i> Cambiar configuración</button>
+        </div>
+        <div class="panel qt-right" id="qtRight">
+          <div class="qt-head">
+            <div><small>Cotización informativa</small><h2>Tu Ninja ZX-4RR</h2></div>
+            <div class="qt-cur"><label for="qtCur">Moneda</label><select id="qtCur"></select></div>
+          </div>
+          <div class="qt-lines" id="qtLines"></div>
+          <div class="qt-total"><span>Total estimado</span><b id="qtTotal"></b></div>
+          <div class="qt-opts">
+            <label>Precio base de referencia (US$)<input type="number" id="qtBase" min="0" step="50"></label>
+            <label>Tasa de cambio<input type="number" id="qtRate" min="0" step="0.01"></label>
+            <label class="check"><input type="checkbox" id="qtFees"> Gastos de matrícula y documentos (estimado 6 %)</label>
+          </div>
+          <div class="btn-row three">
+            <button class="btn btn-sm" id="qtCopy"><i class="fa-regular fa-copy"></i> Copiar resumen</button>
+            <button class="btn btn-sm" id="qtPrint"><i class="fa-solid fa-print"></i> Imprimir / PDF</button>
+            <button class="btn btn-sm" id="qtImgBtn"><i class="fa-solid fa-image"></i> Guardar imagen</button>
+          </div>
+          <div class="qt-disclaimer">
+            <i class="fa-solid fa-circle-info"></i>
+            <p>Esta página es <b>solo informativa</b>: no vende, no reserva y no procesa pagos. Los precios son ilustrativos y cambian según el país, el año y el concesionario. Para un precio real, consulta un concesionario oficial Kawasaki.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= FICHA TÉCNICA ================= -->
+    <section class="view solid" id="view-ficha">
+      <div class="sp-wrap">
+        <div class="panel sp-diagram">
+          <div class="sp-head"><div><small>Ficha técnica</small><h2>Dimensiones</h2></div><small class="muted">Vista lateral del modelo 3D</small></div>
+          <div class="sp-canvas"><img id="spImg" alt="Vista lateral de la ZX-4RR"><svg id="spSvg" viewBox="0 0 1400 640" preserveAspectRatio="xMidYMid meet"></svg></div>
+        </div>
+        <div class="panel sp-data">
+          <div class="seg" id="spTabs"></div>
+          <div class="sp-grid" id="spGrid"></div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Guía rápida -->
+  <div class="modal" id="helpModal" hidden>
+    <div class="modal-card panel help-card">
+      <button class="close-x" data-close aria-label="Cerrar"><i class="fa-solid fa-xmark"></i></button>
+      <h2>Guía rápida</h2>
+      <p class="muted">Todo está a un clic: usa las pestañas de arriba (o las teclas <kbd>1</kbd>–<kbd>7</kbd>). No hace falta bajar por la página.</p>
+      <div class="help-grid">
+        <div><i class="fa-solid fa-house"></i><b>Inicio</b><p>Gira la moto, toca los puntos verdes y mantén pulsado el botón para escuchar el motor.</p></div>
+        <div><i class="fa-solid fa-cubes"></i><b>Despiece 3D</b><p>Explota la moto, arrastra cualquiera de sus 80 piezas, usa rayos X y juega a armarla.</p></div>
+        <div><i class="fa-solid fa-gauge-high"></i><b>Cockpit</b><p>Arranca, acelera con <kbd>W</kbd>, cambia con <kbd>E</kbd>/<kbd>Q</kbd> y prueba el control de tracción.</p></div>
+        <div><i class="fa-solid fa-palette"></i><b>Configurador</b><p>Colores, chasis, llantas, escapes y accesorios en tiempo real.</p></div>
+        <div><i class="fa-solid fa-chart-simple"></i><b>Comparativa</b><p>Radar, cifras y una vuelta simulada contra sus rivales.</p></div>
+        <div><i class="fa-solid fa-file-lines"></i><b>Cotización</b><p>Resumen de precio ilustrativo de tu configuración. No hay pagos.</p></div>
+      </div>
+      <button class="btn btn-primary" data-close>¡Entendido!</button>
+    </div>
+  </div>
+
+  <div id="toasts" aria-live="polite"></div>
+
+  <!-- Código propio (scripts clásicos: funcionan también abriendo el archivo directamente) -->
+  <script src="js/data.js"></script>
+  <script src="js/sim.js"></script>
+  <script src="js/audio.js"></script>
+  <script src="js/bike.js"></script>
+  <script src="js/viewer.js"></script>
+  <script src="js/ui-inicio.js"></script>
+  <script src="js/ui-despiece.js"></script>
+  <script src="js/ui-cockpit.js"></script>
+  <script src="js/ui-config.js"></script>
+  <script src="js/ui-compare.js"></script>
+  <script src="js/ui-quote.js"></script>
+  <script src="js/ui-specs.js"></script>
+  <script src="js/main.js"></script>
+
+  <!-- Three.js desde CDN -->
+  <script type="importmap">
+    {
+      "imports": {
+        "three": "https://cdn.jsdelivr.net/npm/three@0.169.0/build/three.module.js",
+        "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.169.0/examples/jsm/"
+      }
+    }
+  </script>
+  <script type="module">
+    import * as THREE from 'three';
+    import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+    import { CSS2DRenderer, CSS2DObject } from 'three/addons/renderers/CSS2DRenderer.js';
+    import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
+    import { RoundedBoxGeometry } from 'three/addons/geometries/RoundedBoxGeometry.js';
+    import { toCreasedNormals, mergeGeometries } from 'three/addons/utils/BufferGeometryUtils.js';
+    window.THREE = THREE;
+    window.THREE_ADDONS = { OrbitControls, CSS2DRenderer, CSS2DObject, RoomEnvironment, RoundedBoxGeometry, toCreasedNormals, mergeGeometries };
+    window.ZX.boot();
+  </script>
+</body>
+</html>
