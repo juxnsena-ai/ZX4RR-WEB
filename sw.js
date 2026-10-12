@@ -5,7 +5,7 @@
    - Librerías externas (Three.js, fuentes, iconos): primero la copia guardada.
    Al cambiar archivos importantes, sube el número de VERSION.
    ========================================================= */
-const VERSION = 'zx4rr-v1';
+const VERSION = 'zx4rr-v2';
 const CORE = [
   './',
   './index.html',
@@ -29,10 +29,44 @@ const CORE = [
   './icons/icon-512.png'
 ];
 const CDN = ['cdn.jsdelivr.net', 'cdnjs.cloudflare.com', 'fonts.googleapis.com', 'fonts.gstatic.com'];
+// Librerías externas que la app necesita: se guardan desde la primera visita
+const THREE = 'https://cdn.jsdelivr.net/npm/three@0.169.0/';
+const FA = 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/';
+const EXTERNAL = [
+  THREE + 'build/three.module.js',
+  THREE + 'examples/jsm/controls/OrbitControls.js',
+  THREE + 'examples/jsm/renderers/CSS2DRenderer.js',
+  THREE + 'examples/jsm/environments/RoomEnvironment.js',
+  THREE + 'examples/jsm/geometries/RoundedBoxGeometry.js',
+  THREE + 'examples/jsm/utils/BufferGeometryUtils.js',
+  FA + 'css/all.min.css',
+  FA + 'webfonts/fa-solid-900.woff2',
+  FA + 'webfonts/fa-regular-400.woff2',
+  FA + 'webfonts/fa-brands-400.woff2',
+  'https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;800;900&family=Rajdhani:wght@500;600;700&display=swap'
+];
 
 self.addEventListener('install', (e) => {
-  e.waitUntil(caches.open(VERSION).then((c) => c.addAll(CORE)).then(() => self.skipWaiting()));
+  e.waitUntil(
+    caches.open(VERSION)
+      .then((c) => c.addAll(CORE).then(() =>
+        // las externas, una a una: si alguna falla, la app se instala igual
+        Promise.all(EXTERNAL.map((u) => c.add(new Request(u, { mode: 'cors' })).catch(() => {})))
+          .then(() => cacheFontFiles(c))))
+      .then(() => self.skipWaiting())
+  );
 });
+
+// Guarda los archivos de letra (Orbitron y Rajdhani) que cita la hoja de Google Fonts
+function cacheFontFiles(c) {
+  return c.match(EXTERNAL[EXTERNAL.length - 1])
+    .then((res) => (res ? res.text() : ''))
+    .then((css) => {
+      const urls = (css.match(/https:\/\/fonts\.gstatic\.com\/[^)'"]+/g) || []);
+      return Promise.all(urls.map((u) => c.add(new Request(u, { mode: 'cors' })).catch(() => {})));
+    })
+    .catch(() => {});
+}
 
 self.addEventListener('activate', (e) => {
   e.waitUntil(
