@@ -477,6 +477,29 @@ body.game-on .dz-left, body.game-on .dz-right, body.game-on .dz-hint { display: 
   .qt-head h2 { font-size: 19px; }
 }
 
+/* ---------- Instalar como app ---------- */
+.install-btn { display: inline-flex; align-items: center; gap: 7px; height: 38px; padding: 0 13px; border-radius: 10px; border: 1px solid var(--line-strong); background: var(--green-dim); color: var(--green-hi); font-family: var(--font-d); font-size: 10.5px; font-weight: 800; letter-spacing: 0.06em; text-transform: uppercase; white-space: nowrap; transition: 0.2s; }
+.install-btn:hover { background: var(--green); color: #071004; box-shadow: 0 0 18px rgba(107, 203, 31, 0.4); }
+body.can-install .install-btn { animation: installPulse 2.4s ease-in-out 3; }
+@keyframes installPulse { 50% { box-shadow: 0 0 0 5px rgba(107, 203, 31, 0.25), 0 0 20px rgba(107, 203, 31, 0.5); } }
+body.app-installed .install-btn, body.app-installed [data-install] { display: none !important; }
+.install-card { width: min(500px, 100%); }
+.ins-head { display: flex; align-items: center; gap: 14px; margin-bottom: 14px; padding-right: 30px; }
+.ins-head img { border-radius: 16px; box-shadow: 0 6px 20px rgba(107, 203, 31, 0.25); flex-shrink: 0; }
+.ins-head h2 { margin-bottom: 2px; }
+.install-card > #installBody > p { margin-bottom: 12px; }
+.ins-steps { list-style: none; display: flex; flex-direction: column; gap: 8px; margin-bottom: 14px; counter-reset: paso; }
+.ins-steps li { display: flex; align-items: center; gap: 12px; padding: 11px 12px; border-radius: 12px; background: rgba(255, 255, 255, 0.04); border: 1px solid var(--line-2); font-size: 15px; line-height: 1.35; }
+.ins-ico { width: 38px; height: 38px; border-radius: 10px; display: grid; place-items: center; flex-shrink: 0; background: var(--green-dim); color: var(--green); font-size: 17px; }
+.ins-note { display: flex; gap: 8px; font-size: 13px; color: var(--muted); line-height: 1.4; margin-bottom: 16px; }
+.ins-note i { color: var(--green); margin-top: 2px; }
+.install-card > .btn { width: 100%; }
+.help-card .btn-row { margin-top: 4px; }
+@media (max-width: 860px) {
+  .install-btn { width: 38px; padding: 0; justify-content: center; }
+  .install-btn span { display: none; }
+}
+
 /* ---------- Guía ---------- */
 .help-card { width: min(720px, 100%); }
 .help-card > p { margin-bottom: 16px; }
@@ -485,7 +508,7 @@ body.game-on .dz-left, body.game-on .dz-right, body.game-on .dz-hint { display: 
 .help-grid i { color: var(--green); font-size: 18px; }
 .help-grid b { display: block; font-family: var(--font-d); font-size: 12px; margin: 6px 0 4px; }
 .help-grid p { font-size: 13.5px; color: #c7cfc4; line-height: 1.4; }
-.help-card > .btn { width: 100%; }
+.help-card > .btn, .help-card .btn-row > .btn { width: 100%; }
 
 /* ---------- Ajustes de altura ---------- */
 @media (max-height: 760px) {

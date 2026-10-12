@@ -16,6 +16,8 @@ Todo funciona en el navegador: no necesita servidor propio, base de datos ni com
 | **Cotización** | Resumen de precio **solo informativo** de la configuración (moneda y precio base editables, copiar, imprimir/PDF, guardar imagen). No hay pagos ni reservas. |
 | **Ficha técnica** | Datos completos por categoría y diagrama de dimensiones sobre la vista lateral del modelo 3D. |
 
+**App instalable (PWA):** el botón **Instalar app** de la barra superior instala la página como una app en el móvil o el ordenador, sin tienda y sin APK. En Android (Chrome, Edge, Samsung Internet) aparece el aviso de instalación del navegador; en iPhone y iPad se muestran los pasos de Safari ("Compartir → Añadir a pantalla de inicio"). Una vez abierta, funciona también sin conexión. Si cambias archivos importantes, sube el número `VERSION` de `sw.js` para que las apps instaladas descarguen la versión nueva.
+
 Navegación sin scroll: cada sección ocupa la pantalla y se cambia con las pestañas (o con las teclas `1` a `7`). En móvil las pestañas pasan a una barra inferior.
 
 ## Publicar en GitHub Pages
@@ -45,6 +47,8 @@ git push -u origin main
 
 ```
 index.html          Estructura de las 7 secciones
+manifest.webmanifest, sw.js, icons/   App instalable (PWA): nombre, íconos y modo sin conexión
+js/install.js       Botón "Instalar app" (Android, iPhone y ordenador)
 css/styles.css      Estilos (tema oscuro, adaptado a móvil)
 js/data.js          TODOS los textos y datos: piezas, ficha técnica, rivales, colores, precios
 js/bike.js          Modelo 3D procedural: las 80 piezas, su posición de despiece y animación

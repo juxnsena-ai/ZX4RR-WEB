@@ -6,7 +6,15 @@
   <title>Ninja ZX-4RR · Experiencia 3D</title>
   <meta name="description" content="Experiencia interactiva de la Kawasaki Ninja ZX-4RR: despiece 3D de 80 piezas, sonido del motor, pantalla TFT, configurador, comparativa y ficha técnica. Página informativa no oficial.">
   <meta name="theme-color" content="#060807">
-  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23060807'/%3E%3Cpath d='M14 46 L30 18 L36 18 L24 40 L50 40 L46 46 Z' fill='%236BCB1F'/%3E%3C/svg%3E">
+  <!-- App instalable (PWA): Android, iPhone/iPad y ordenador -->
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="icon" type="image/png" sizes="192x192" href="icons/icon-192.png">
+  <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="apple-mobile-web-app-title" content="ZX-4RR">
+  <meta name="application-name" content="ZX-4RR">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;800;900&family=Rajdhani:wght@500;600;700&display=swap" rel="stylesheet">
@@ -38,6 +46,7 @@
       <button class="tab" data-go="ficha" data-short="Ficha" title="Ficha técnica (7)"><i class="fa-solid fa-list-check"></i><span>Ficha técnica</span></button>
     </nav>
     <div class="top-actions">
+      <button class="install-btn" id="installBtn" data-install title="Instalar la app en tu móvil u ordenador" aria-label="Instalar app"><i class="fa-solid fa-download"></i><span>Instalar app</span></button>
       <div class="engine-pill" id="enginePill" hidden>
         <span class="ep-dot"></span><b id="epRpm">0</b><small>rpm</small>
         <button id="epStop" title="Apagar motor" aria-label="Apagar motor"><i class="fa-solid fa-power-off"></i></button>
@@ -401,7 +410,24 @@
         <div><i class="fa-solid fa-chart-simple"></i><b>Comparativa</b><p>Radar, cifras y una vuelta simulada contra sus rivales.</p></div>
         <div><i class="fa-solid fa-file-lines"></i><b>Cotización</b><p>Resumen de precio ilustrativo de tu configuración. No hay pagos.</p></div>
       </div>
-      <button class="btn btn-primary" data-close>¡Entendido!</button>
+      <div class="btn-row">
+        <button class="btn" data-install data-close><i class="fa-solid fa-download"></i> Instalar como app</button>
+        <button class="btn btn-primary" data-close>¡Entendido!</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Instalar como app -->
+  <div class="modal" id="installModal" hidden>
+    <div class="modal-card panel install-card">
+      <button class="close-x" data-close aria-label="Cerrar"><i class="fa-solid fa-xmark"></i></button>
+      <div class="ins-head">
+        <img src="icons/icon-192.png" alt="" width="64" height="64">
+        <div><h2>Instala la app ZX-4RR</h2><small class="muted">Gratis · sin tienda de apps · ocupa muy poco</small></div>
+      </div>
+      <div id="installBody"></div>
+      <p class="ins-note"><i class="fa-solid fa-circle-info"></i> Es una app web: se abre a pantalla completa desde su ícono, igual que una app normal, y funciona aunque no tengas internet después de abrirla una vez.</p>
+      <button class="btn btn-primary" data-close>Entendido</button>
     </div>
   </div>
 
@@ -420,6 +446,7 @@
   <script src="js/ui-compare.js"></script>
   <script src="js/ui-quote.js"></script>
   <script src="js/ui-specs.js"></script>
+  <script src="js/install.js"></script>
   <script src="js/main.js"></script>
 
   <!-- Three.js desde CDN -->

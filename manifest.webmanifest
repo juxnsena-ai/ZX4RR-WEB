@@ -1,0 +1,19 @@
+{
+  "id": "./",
+  "name": "Ninja ZX-4RR · Experiencia 3D",
+  "short_name": "ZX-4RR",
+  "description": "Despiece 3D de 80 piezas, sonido del motor, pantalla TFT, configurador, comparativa y ficha técnica de la Kawasaki Ninja ZX-4RR.",
+  "lang": "es",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "any",
+  "background_color": "#060807",
+  "theme_color": "#060807",
+  "categories": ["entertainment", "education", "sports"],
+  "icons": [
+    { "src": "icons/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "icons/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "icons/icon-maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ]
+}
